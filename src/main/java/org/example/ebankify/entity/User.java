@@ -1,9 +1,6 @@
 package org.example.ebankify.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.ebankify.enums.UserRole;
 
@@ -21,18 +18,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    @NotBlank(message = "First name is required")
+    @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is required")
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -40,8 +33,10 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist
