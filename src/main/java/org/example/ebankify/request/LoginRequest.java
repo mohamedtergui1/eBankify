@@ -1,14 +1,11 @@
-package org.example.ebankify.dto;
+package org.example.ebankify.request;
 
-import lombok.Builder;
+
 import lombok.Getter;
-import lombok.Setter;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 @Getter
-@Setter
-@Builder
-public class LoginDto {
+public class LoginRequest {
     @NotBlank(message = "email is require")
     @Email(message = "Email should be valid")
     private String email;
