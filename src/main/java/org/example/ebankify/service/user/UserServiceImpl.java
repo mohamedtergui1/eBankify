@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -36,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new DeleteUpdateException("User with id not " + id + " deleted cause not found  " );
+            throw new DeleteUpdateException("User with id  " + id + " not deleted cause not found");
         }
         userRepository.deleteById(id);
     }
@@ -44,9 +42,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(User user) {
-
         if (!userRepository.existsById(user.getId())) {
-            throw new DeleteUpdateException("User with id not " + user.getId() + " updated cause not found  " );
+            throw new DeleteUpdateException("User with id  " + user.getId() + " not updated cause not found");
         }
         return userRepository.save(user);
     }

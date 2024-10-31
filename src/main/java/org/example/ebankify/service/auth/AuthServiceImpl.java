@@ -1,37 +1,48 @@
 package org.example.ebankify.service.auth;
 
-import org.example.ebankify.dto.LoginDto;
+import org.example.ebankify.request.LoginRequest;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.enums.UserRole;
+import org.example.ebankify.exception.NotAuthException;
 import org.example.ebankify.repository.UserRepository;
-import org.example.ebankify.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.stream.Stream;
+import java.util.Optional;
+
 
 @Service
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+
 
     @Autowired
-    public AuthServiceImpl(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
+
     }
 
     @Override
-    public User login(LoginDto loginDto) {
-        userRepository.findByEmail(loginDto.getEmail()).ifPresent(user -> {
-
-        });
-        return null;
+    public User login(LoginRequest loginRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())) {
+                return user;
+            } else {
+                throw new NotAuthException("Invalid credentials");
+            }
+        } else {
+            throw new NotAuthException("Invalid credentials");
+        }
     }
 
     @Override
     public User register(User user) {
         user.setRole(UserRole.USER);
-        return null;
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+
+        return userRepository.save(user);
     }
 }
