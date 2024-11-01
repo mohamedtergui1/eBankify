@@ -1,9 +1,9 @@
 package org.example.ebankify.service.auth;
 
-import org.example.ebankify.request.LoginRequest;
+import org.example.ebankify.dto.request.LoginRequest;
 import org.example.ebankify.entity.User;
 
 public interface AuthService {
-    User login(LoginRequest loginRequest);
+    User login(User user);
     User register(User user);
 }

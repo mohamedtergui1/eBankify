@@ -14,10 +14,10 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter implements Filter {
 
-    private final CustomJwtUtil jwtUtil;
+    private final Jwt jwtUtil;
 
     @Autowired
-    public JwtAuthenticationFilter(CustomJwtUtil jwtUtil) {
+    public JwtAuthenticationFilter(Jwt jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
@@ -32,17 +32,16 @@ public class JwtAuthenticationFilter implements Filter {
         String authHeader = httpRequest.getHeader("Authorization");
 
         try {
-
             if (path.startsWith("/users")) {
-                  chechAuth(authHeader);
+                chechAuth(authHeader);
             } else if (path.startsWith("/employees")) {
                 String role = chechAuth(authHeader).split("<@>")[1];
                 if (!UserRole.EMPLOYEE.name().equals(role) && !UserRole.ADMIN.name().equals(role)) {
                     throw new PermissionException("You don't have permission for this route");
                 }
-            }else if(path.startsWith("/admins")){
+            } else if (path.startsWith("/admins")) {
                 String role = chechAuth(authHeader).split("<@>")[1];
-                if ( !UserRole.ADMIN.name().equals(role)) {
+                if (!UserRole.ADMIN.name().equals(role)) {
                     throw new PermissionException("You don't have permission for this route");
                 }
             }
@@ -62,7 +61,6 @@ public class JwtAuthenticationFilter implements Filter {
         }
     }
 
-
     private String chechAuth(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
@@ -77,8 +75,4 @@ public class JwtAuthenticationFilter implements Filter {
             throw new NotAuthException("you need to  authenticate");
     }
 
-
-    @Override
-    public void destroy() {
-    }
 }

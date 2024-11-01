@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: eBankify
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/eBankify
+    username: myuser
+    password: mypassword
+
+liquibase:
+  change-log: classpath:db/changelog/db.changelog-master.yaml

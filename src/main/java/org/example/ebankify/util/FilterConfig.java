@@ -10,7 +10,7 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter() {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new JwtAuthenticationFilter(new CustomJwtUtil()));
+        registrationBean.setFilter(new JwtAuthenticationFilter(new JwtUtil()));
         return registrationBean;
     }
 }

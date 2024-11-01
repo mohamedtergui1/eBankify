@@ -1,4 +1,4 @@
-package org.example.ebankify.request;
+package org.example.ebankify.dto.request;
 
 
 import lombok.Getter;

@@ -2,7 +2,8 @@ package org.example.ebankify.controller;
 
 import jakarta.validation.Valid;
 import org.example.ebankify.entity.User;
-import org.example.ebankify.request.CreateUserRequest;
+import org.example.ebankify.dto.request.CreateUserRequest;
+import org.example.ebankify.mappers.UserMapper;
 import org.example.ebankify.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admins")
 public class UserController {
-    UserService userService;
-
+    private final UserService userService;
+    private final UserMapper userMapper;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService , UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/{id}")
@@ -24,7 +26,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody @Valid CreateUserRequest request) {
-        return userService.saveUser(request.toUser());
+        return userService.saveUser(userMapper.toEntity(request));
     }
 
     @PutMapping

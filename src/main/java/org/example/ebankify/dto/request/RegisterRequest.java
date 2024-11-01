@@ -1,4 +1,4 @@
-package org.example.ebankify.request;
+package org.example.ebankify.dto.request;
 
 
 import jakarta.validation.constraints.*;
@@ -8,7 +8,6 @@ import org.example.ebankify.annotation.UniqueField;
 import org.example.ebankify.entity.User;
 
 @Getter
-@Setter
 public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 30, message = "the length of password must be between 8 and 30")
@@ -26,7 +25,4 @@ public class RegisterRequest {
     @NotBlank(message = "Email is required")
     private String email;
 
-    public User toUser() {
-        return User.builder().password(password).firstName(firstName).email(email).lastName(lastName).build();
-    }
 }

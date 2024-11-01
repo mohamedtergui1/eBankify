@@ -1,6 +1,6 @@
 package org.example.ebankify.service.auth;
 
-import org.example.ebankify.request.LoginRequest;
+import org.example.ebankify.dto.request.LoginRequest;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.enums.UserRole;
 import org.example.ebankify.exception.NotAuthException;
@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User login(LoginRequest loginRequest) {
+    public User login(User loginRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
