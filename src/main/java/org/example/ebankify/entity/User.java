@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.ebankify.enums.UserRole;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -14,39 +15,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
+    private int age;
+
+    @Column(name = "monthly_income")
+    private Double monthlyIncome;
+
+    @Column(name = "credit_score")
+    private int creditScore;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private UserRole role;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts = new ArrayList<>();
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }
