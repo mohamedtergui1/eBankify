@@ -10,5 +10,4 @@ import org.example.ebankify.enums.UserRole;
 public class CreateUserRequest extends RegisterRequest {
     @NotNull
     private UserRole role;
-
 }

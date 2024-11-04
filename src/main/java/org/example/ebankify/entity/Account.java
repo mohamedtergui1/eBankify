@@ -3,6 +3,8 @@ package org.example.ebankify.entity;
 import jakarta.persistence.*;
 import org.example.ebankify.enums.AccountStatus;
 
+import java.util.List;
+
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -20,5 +22,11 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "sender")
+    List<Transaction> transactionssender;
+
+    @OneToMany(mappedBy = "receiver")
+    List<Transaction> transactionsreciver;
 
 }
