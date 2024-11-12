@@ -1,12 +1,16 @@
 package org.example.ebankify.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.example.ebankify.enums.AccountStatus;
 
 import java.util.List;
 
 @Entity
 @Table(name = "accounts")
+@Getter
+@Setter
 public class Account {
 
     @Id
@@ -15,18 +19,20 @@ public class Account {
     private Long id;
 
     private Double balance;
+    @Column(name = "account_number",unique = true)
+    private String accountNumber;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "sender")
-    List<Transaction> transactionssender;
+    @OneToMany(mappedBy = "sender" )
+    private List<Transaction> transactionssender;
 
     @OneToMany(mappedBy = "receiver")
-    List<Transaction> transactionsreciver;
+    private List<Transaction> transactionsreciver;
 
 }

@@ -1,27 +1,67 @@
 package org.example.ebankify.service.account;
 
 import org.example.ebankify.entity.Account;
+import org.example.ebankify.exception.DeleteUpdateException;
+import org.example.ebankify.exception.NotFoundException;
+import org.example.ebankify.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Component
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
+
+    private final AccountRepository accountRepository;
+
+    @Autowired
+    public AccountServiceImpl(AccountRepository accountRepository) {
+
+        this.accountRepository = accountRepository;
+
+    }
+
     @Override
     public Account getAccount(long id) {
-        return null;
+
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isPresent()) {
+            return account.get();
+        }
+        throw new NotFoundException("Account not found");
+
     }
 
     @Override
     public Account createAccount(Account account) {
-        return null;
+
+        return accountRepository.save(account);
+
     }
 
     @Override
+    @Transactional
     public Account updateAccount(Account account) {
-        return null;
+
+        if (accountRepository.findById(account.getId()).isPresent()) {
+            return accountRepository.save(account);
+        }
+        throw new DeleteUpdateException("Account could not  found");
+
     }
 
     @Override
+    @Transactional
     public void deleteAccount(long id) {
 
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isPresent()) {
+            accountRepository.delete(account.get());
+            return;
+        }
+        throw new DeleteUpdateException("Account could not  found");
+
     }
+
 }
