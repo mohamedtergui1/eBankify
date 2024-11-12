@@ -22,17 +22,25 @@ public class UniqueFieldValidator implements ConstraintValidator<UniqueField, St
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+
         if (value == null) {
             return true;
         }
+
+
+
         try {
-            String queryStr = String.format("SELECT COUNT(e) FROM %s e WHERE e.%s = :value", entity.getSimpleName(), field);
+            String queryStr = String.format("SELECT COUNT(e) FROM %s e WHERE e.%s = :value",
+                    entity.getSimpleName(), field);
+
             Long count = entityManager.createQuery(queryStr, Long.class)
                     .setParameter("value", value)
                     .getSingleResult();
+
+            // If count == 0, the value is unique
             return count == 0;
         } catch (Exception e) {
-            throw new RuntimeException("something is wrong during validate Unique field : " + field + " and entity  " + entity.getSimpleName() + "  \n" + e);
+            throw new RuntimeException("Error validating unique field: " + field + " for entity " + entity.getSimpleName(), e);
         }
     }
 }

@@ -1,14 +1,13 @@
-package org.example.ebankify.dto.request;
+package org.example.ebankify.dto.request.user;
 
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.example.ebankify.annotation.UniqueField;
 import org.example.ebankify.entity.User;
 
 @Getter
-@Setter
+
 public class RegisterRequest {
 
     @NotBlank(message = "Password is required")

@@ -1,9 +1,10 @@
-package org.example.ebankify.dto.request;
+package org.example.ebankify.dto.request.user;
 
 
 import lombok.Getter;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+
 @Getter
 public class LoginRequest {
     @NotBlank(message = "email is require")

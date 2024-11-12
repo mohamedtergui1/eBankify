@@ -40,6 +40,12 @@ public class User {
     private UserRole role;
 
     @OneToMany(mappedBy = "user")
-    private List<Account> accounts = new ArrayList<>();
+    private List<Account> accounts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans;
 
 }

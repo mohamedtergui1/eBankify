@@ -13,4 +13,5 @@ public class FilterConfig {
         registrationBean.setFilter(new JwtAuthenticationFilter(new JwtUtil()));
         return registrationBean;
     }
+
 }

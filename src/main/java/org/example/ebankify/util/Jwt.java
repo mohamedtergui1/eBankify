@@ -1,13 +1,7 @@
 package org.example.ebankify.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
-import java.util.Date;
 
 public interface Jwt {
 
@@ -15,7 +9,7 @@ public interface Jwt {
 
     public boolean validateToken(String token, String email);
 
-    public String extractEmail(String token);
+    public String extractInputString(String token);
 
     public Claims extractClaims(String token);
 

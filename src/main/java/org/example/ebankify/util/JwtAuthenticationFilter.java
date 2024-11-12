@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter implements Filter {
     private String chechAuth(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            String email = jwtUtil.extractEmail(token);
+            String email = jwtUtil.extractInputString(token);
             if (!jwtUtil.validateToken(token, email)) {
                 throw new NotAuthException("you need to  authenticate");
             }

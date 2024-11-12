@@ -16,10 +16,10 @@ public class JwtUtil implements Jwt {
     private final String SECRET_KEY = "jfzbieu  ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13";
     private final long EXPIRATION_TIME = 86400000;
 
-    // Generate the JWT token
-    public String generateToken(String email) {
+
+    public String generateToken(String InputString) {
         JwtBuilder jwtBuilder = Jwts.builder()
-                .setSubject(email)
+                .setSubject(InputString)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512);
@@ -27,24 +27,24 @@ public class JwtUtil implements Jwt {
         return jwtBuilder.compact();
     }
 
-    // Retrieve the signing key
+
     private Key getSigningKey() {
-        byte[] keyBytes = SECRET_KEY.getBytes(); // Directly get bytes without Base64 decoding
+        byte[] keyBytes = SECRET_KEY.getBytes();
         return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
     }
 
-    // Validate the token by checking email and expiration
-    public boolean validateToken(String token, String email) {
-        final String extractedEmail = extractEmail(token);
-        return (extractedEmail.equals(email) && !isTokenExpired(token));
+
+    public boolean validateToken(String token, String InputString) {
+        final String extractedInputString = extractInputString(token);
+        return (extractedInputString.equals(InputString) && !isTokenExpired(token));
     }
 
-    // Extract email from the token
-    public String extractEmail(String token) {
+
+    public String extractInputString(String token) {
         return extractClaims(token).getSubject();
     }
 
-    // Extract claims from the token
+
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -53,7 +53,7 @@ public class JwtUtil implements Jwt {
                 .getBody();
     }
 
-    // Check if the token is expired
+
     private boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }
