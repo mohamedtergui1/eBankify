@@ -1,36 +1,49 @@
 package org.example.ebankify.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
+
+import org.example.ebankify.dto.account.response.AccountDtoResponse;
 import org.example.ebankify.entity.Account;
+import org.example.ebankify.mappers.AccountMapper;
 import org.example.ebankify.service.account.AccountService;
+import org.example.ebankify.service.user.UserService;
 import org.example.ebankify.util.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/users/account")
 public class AcountController {
 
     private final AccountService accountService;
+    private final AccountMapper accountMapper;
     private final Jwt jwt;
+    private UserService userService;
 
     @Autowired
-    public AcountController(AccountService accountService, Jwt jwt) {
+    public AcountController(AccountService accountService, Jwt jwt, AccountMapper accountMapper , UserService userService) {
         this.accountService = accountService;
         this.jwt = jwt;
+        this.accountMapper = accountMapper;
+        this.userService = userService;
     }
 
     @GetMapping
-    public List<Account> authUserAccount(HttpServletRequest request) {
-        String email = jwt.extractInputString(request.getHeader("Authorization").substring(7));
+    public Page<Account> authUserAccount(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestHeader("Authorization") String token) {
 
-        email = email;
+        String email = jwt.extractInputString(token.substring(7));
 
-        return null;
+        return accountService.getAuthUserAccounts(email.split("<@>")[0],page,size);
+    }
+
+    @PostMapping
+    public Account createAccount(@RequestBody AccountDtoResponse accountDtoResponse) {
+        Account account = accountMapper.toEntity(accountDtoResponse);
+        return accountService.createAccount(account);
     }
 
 }

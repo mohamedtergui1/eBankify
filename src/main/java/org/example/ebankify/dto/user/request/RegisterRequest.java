@@ -1,4 +1,4 @@
-package org.example.ebankify.dto.request.user;
+package org.example.ebankify.dto.user.request;
 
 
 import jakarta.validation.constraints.*;

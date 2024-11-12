@@ -1,9 +1,10 @@
-package org.example.ebankify.dto.response;
+package org.example.ebankify.dto.account.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.ebankify.dto.user.respense.UserDtoResponse;
 import org.example.ebankify.enums.AccountStatus;
 
 
@@ -20,5 +21,7 @@ public class AccountDtoResponse {
     private String accountNumber;
 
     private AccountStatus status;
+
+    private UserDtoResponse userDto;
 
 }

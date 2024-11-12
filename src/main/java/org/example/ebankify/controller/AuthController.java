@@ -1,8 +1,8 @@
 package org.example.ebankify.controller;
 
 import jakarta.validation.Valid;
-import org.example.ebankify.dto.request.user.LoginRequest;
-import org.example.ebankify.dto.request.user.RegisterRequest;
+import org.example.ebankify.dto.user.request.LoginRequest;
+import org.example.ebankify.dto.user.request.RegisterRequest;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.mappers.UserMapper;
 import org.example.ebankify.service.auth.AuthService;

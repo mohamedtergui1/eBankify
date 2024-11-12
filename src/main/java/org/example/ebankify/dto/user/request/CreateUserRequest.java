@@ -1,5 +1,4 @@
-package org.example.ebankify.dto.request.user;
-
+package org.example.ebankify.dto.user.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -7,12 +6,8 @@ import org.example.ebankify.annotation.UniqueField;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.enums.UserRole;
 
-
 @Getter
-public class UpdateUserRequest  {
-
-    @NotNull(message = "you need to send the id for validate")
-    private long id;
+public class CreateUserRequest {
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 30)
@@ -39,5 +34,4 @@ public class UpdateUserRequest  {
 
     @NotNull
     private UserRole role;
-
 }

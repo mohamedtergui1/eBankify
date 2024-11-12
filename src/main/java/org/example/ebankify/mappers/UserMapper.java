@@ -1,9 +1,10 @@
 package org.example.ebankify.mappers;
 
-import org.example.ebankify.dto.request.user.CreateUserRequest;
-import org.example.ebankify.dto.request.user.LoginRequest;
-import org.example.ebankify.dto.request.user.RegisterRequest;
-import org.example.ebankify.dto.request.user.UpdateUserRequest;
+import org.example.ebankify.dto.user.request.CreateUserRequest;
+import org.example.ebankify.dto.user.request.LoginRequest;
+import org.example.ebankify.dto.user.request.RegisterRequest;
+import org.example.ebankify.dto.user.request.UpdateUserRequest;
+import org.example.ebankify.dto.user.respense.UserDtoResponse;
 import org.example.ebankify.entity.User;
 import org.mapstruct.Mapper;
 
@@ -17,5 +18,7 @@ public interface UserMapper {
     User toEntity(RegisterRequest registerRequest);
 
     User toEntity(UpdateUserRequest updateUserRequest);
+
+    UserDtoResponse toDto(User user);
 
 }

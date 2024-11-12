@@ -6,9 +6,15 @@ import org.example.ebankify.exception.NotFoundException;
 import org.example.ebankify.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,6 +67,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(user);
+    }
+
+
+    public Page<User> getAllUsers( int page ,   int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+
     }
 
 
