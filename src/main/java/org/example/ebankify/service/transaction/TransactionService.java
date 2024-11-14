@@ -8,8 +8,6 @@ public interface TransactionService {
 
     Transaction saveTransaction(Transaction transaction);
 
-    void deleteTransaction(Long id);
 
-    Transaction updateTransaction(Transaction transaction);
 
 }

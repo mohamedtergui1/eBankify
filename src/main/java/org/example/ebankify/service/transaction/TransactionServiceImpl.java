@@ -1,20 +1,26 @@
 package org.example.ebankify.service.transaction;
 
+import org.example.ebankify.entity.Account;
 import org.example.ebankify.entity.Transaction;
-import org.example.ebankify.exception.DeleteUpdateException;
+import org.example.ebankify.exception.BadRequest;
 import org.example.ebankify.exception.NotFoundException;
+import org.example.ebankify.repository.AccountRepository;
 import org.example.ebankify.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -25,21 +31,22 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public Transaction saveTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
-    }
 
-    @Override
-    public void deleteTransaction(Long id) {
-        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> new DeleteUpdateException("Transaction not deleted cause isn't found"));
-        transactionRepository.delete(transaction);
-    }
+        Account sender = accountRepository.findByAccountNumber(transaction.getSender().getAccountNumber()).orElseThrow(() -> new NotFoundException("Account sender not found"));
+        Account receiver = accountRepository.findByAccountNumber(transaction.getReceiver().getAccountNumber()).orElseThrow(() -> new NotFoundException("Account receiver not found"));
 
-    @Override
-    public Transaction updateTransaction(Transaction transaction) {
-        if (transactionRepository.existsById(transaction.getId())) {
-            return transactionRepository.save(transaction);
+        if (sender.getBalance() < transaction.getAmount()) {
+            throw new BadRequest("tha balance is not enough");
         }
-        throw new DeleteUpdateException("Transaction not deleted cause isn't found");
+
+        sender.setBalance(sender.getBalance() - transaction.getAmount());
+        receiver.setBalance(receiver.getBalance() + transaction.getAmount());
+        accountRepository.save(sender);
+        accountRepository.save(receiver);
+        return transactionRepository.save(transaction);
+
     }
+
 }
