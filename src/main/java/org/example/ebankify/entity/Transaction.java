@@ -25,11 +25,11 @@ public class Transaction {
     private TransactionStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "sender_id")
+    @JoinColumn(name = "sender_id")
     private Account sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "receiver_id")
+    @JoinColumn(name = "receiver_id")
     private Account receiver;
 
 }

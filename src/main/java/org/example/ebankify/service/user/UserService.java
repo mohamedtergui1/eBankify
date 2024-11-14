@@ -12,6 +12,8 @@ public interface UserService {
 
     User updateUser(User user);
 
+    User getUserByEmail(String email);
+
     Page<User> getAllUsers(int page, int size);
 
 }

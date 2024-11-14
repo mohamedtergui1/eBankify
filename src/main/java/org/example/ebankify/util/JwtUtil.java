@@ -16,7 +16,6 @@ public class JwtUtil implements Jwt {
     private final String SECRET_KEY = "jfzbieu  ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13ç7891JKDHIUAZHDIUE8237YR3H2IDX298HDIUP3HD92738DH13";
     private final long EXPIRATION_TIME = 86400000;
 
-
     public String generateToken(String InputString) {
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setSubject(InputString)
