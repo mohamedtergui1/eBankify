@@ -3,6 +3,7 @@ package org.example.ebankify.controller;
 import jakarta.validation.Valid;
 import org.example.ebankify.dto.user.request.LoginRequest;
 import org.example.ebankify.dto.user.request.RegisterRequest;
+import org.example.ebankify.dto.user.respense.UserDtoResponse;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.mappers.UserMapper;
 import org.example.ebankify.service.auth.AuthService;
@@ -33,12 +34,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseForme<ResponseFormeWithToken<User>>> login(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<ResponseForme<ResponseFormeWithToken<UserDtoResponse>>> login(@RequestBody @Valid LoginRequest loginRequest) {
         User user = authService.login(userMapper.toEntity(loginRequest));
         return ResponseEntity.ok(
-                new ResponseFormeWithToken<User>(
+                new ResponseFormeWithToken<UserDtoResponse>(
                         jwtUtil.generateToken(
-                                user.getEmail() + "<@>" + user.getRole().name()), user, "login with success"));
+                                user.getEmail() + "<@>" + user.getRole().name()), userMapper.toDto(user), "login with success"));
     }
 
     @PostMapping("/register")

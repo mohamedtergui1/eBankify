@@ -1,5 +1,8 @@
 package org.example.ebankify.dto.account.response;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,6 @@ public class AccountDtoResponse {
 
     private AccountStatus status;
 
-    private UserDtoResponse userDto;
+    private UserDtoResponse user;
 
 }

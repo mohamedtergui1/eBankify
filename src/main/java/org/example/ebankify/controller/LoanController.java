@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/loan")
+@RequestMapping("users/loan")
 public class LoanController {
 
     private final LoanService loanService;
@@ -27,10 +27,7 @@ public class LoanController {
         return loanService.saveLoan(loan);
     }
 
-    @PutMapping
-    public Loan updateLoan(@RequestBody Loan loan) {
-        return loanService.updateLoan(loan);
-    }
+
 
 
 }

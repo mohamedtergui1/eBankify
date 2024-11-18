@@ -9,7 +9,6 @@ import org.example.ebankify.enums.TransactionStatus;
 import org.example.ebankify.enums.TransactionType;
 
 @Entity
-@Table(name = "transaction")
 @Getter
 @Setter
 @NoArgsConstructor

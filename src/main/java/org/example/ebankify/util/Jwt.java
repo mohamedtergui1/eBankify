@@ -11,6 +11,8 @@ public interface Jwt {
 
     public String extractInputString(String token);
 
+    public String extractEmailString(String token);
+
     public Claims extractClaims(String token);
 
 }

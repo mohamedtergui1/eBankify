@@ -1,7 +1,9 @@
 package org.example.ebankify.service.account;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ebankify.entity.Account;
 import org.example.ebankify.entity.User;
+import org.example.ebankify.exception.BadRequest;
 import org.example.ebankify.exception.DeleteUpdateException;
 
 import org.example.ebankify.exception.NotAuthException;
@@ -11,7 +13,7 @@ import org.example.ebankify.repository.AccountRepository;
 import org.example.ebankify.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, UserRepository userRepository) {
 
-        this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
 
-    }
 
     @Override
     public Account getAccount(long id) {
@@ -46,8 +44,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public Account createAccount(Account account) {
-
+        if(accountRepository.existsByAccountNumber(account.getAccountNumber())) {
+            throw new BadRequest("account number already exists");
+        }
+        if(!userRepository.existsById(account.getUser().getId())){
+            throw new BadRequest("user not  found");
+        }
         return accountRepository.save(account);
 
     }

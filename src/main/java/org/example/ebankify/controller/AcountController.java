@@ -2,9 +2,14 @@ package org.example.ebankify.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.example.ebankify.dto.account.request.AccountCreateDto;
 import org.example.ebankify.dto.account.request.AccountUpdateDto;
 import org.example.ebankify.dto.account.response.AccountDtoResponse;
 import org.example.ebankify.entity.Account;
+import org.example.ebankify.entity.Loan;
+import org.example.ebankify.entity.User;
+import org.example.ebankify.exception.PermissionException;
 import org.example.ebankify.mappers.AccountMapper;
 import org.example.ebankify.service.account.AccountService;
 import org.example.ebankify.service.user.UserService;
@@ -23,26 +28,39 @@ public class AcountController {
     private final Jwt jwt;
     private final UserService userService;
 
-
-
-
     @GetMapping
-    public Page<Account> authUserAccounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestHeader("Authorization") String token) {
+    public Page<AccountDtoResponse> authUserAccounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestHeader("Authorization") String token) {
 
-        String email = jwt.extractInputString(token.substring(7));
-        return accountService.getAuthUserAccounts(email.split("<@>")[0], page, size);
+        String email = jwt.extractEmailString(token.substring(7));
+        return accountService.getAuthUserAccounts(email, page, size).map(accountMapper::toDto);
     }
 
     @PostMapping
-    public Account createAccount(@RequestBody AccountDtoResponse accountDtoResponse, @RequestHeader("Authorization") String token) {
-        Account account = accountMapper.toEntity(accountDtoResponse);
-        account.setUser(userService.getUserByEmail(jwt.extractInputString(token.substring(7).split("<@>")[0])));
-        return accountService.createAccount(account);
+    public AccountDtoResponse createAccount(@RequestBody AccountCreateDto accountCreateDto, @RequestHeader("Authorization") String token) {
+        Account account = accountMapper.toEntity(accountCreateDto);
+        account.setUser(userService.getUserByEmail(jwt.extractEmailString(token.substring(7))));
+        return accountMapper.toDto(accountService.createAccount(account));
     }
 
     @PutMapping
-    public Account updateAccount(@RequestBody AccountUpdateDto accountUpdateDto) {
-        return accountService.updateAccount(accountMapper.toEntity(accountUpdateDto));
+    public AccountDtoResponse updateAccount(@RequestBody AccountUpdateDto accountUpdateDto, @RequestHeader("Authorization") String token) {
+        User user = userService.getUserByEmail(jwt.extractEmailString(token.substring(7)));
+        Account account = accountService.getAccount(accountUpdateDto.getId());
+        if (account.getUser().getId().equals(user.getId())) {
+            throw new PermissionException("you dont have permission");
+        }
+
+        return accountMapper.toDto(accountService.updateAccount(accountMapper.toEntity(accountUpdateDto)));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAccount(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        User user = userService.getUserByEmail(jwt.extractEmailString(token.substring(7)));
+        Account account = accountService.getAccount(id);
+        if (account.getUser().getId().equals(user.getId())) {
+            throw new PermissionException("you dont have permission");
+        }
+        accountService.deleteAccount(id);
     }
 
 }

@@ -43,6 +43,13 @@ public class JwtUtil implements Jwt {
         return extractClaims(token).getSubject();
     }
 
+    @Override
+    public String extractEmailString(String token) {
+        return extractInputString(token).split("<@>")[0];
+    }
+
+
+
 
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()

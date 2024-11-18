@@ -31,14 +31,18 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Loan saveLoan(Loan loan) {
-
+        userRepository.findById(loan.getUser().getId()).orElseThrow(()-> new NotFoundException("user not found"));
         return loanRepository.save(loan);
     }
 
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Loan updateLoan(Loan loan) {
+        loanRepository.getById(loan.getId());
+        userRepository.findById(loan.getUser().getId()).orElseThrow(()-> new NotFoundException("user not found"));
         return loanRepository.save(loan);
     }
 

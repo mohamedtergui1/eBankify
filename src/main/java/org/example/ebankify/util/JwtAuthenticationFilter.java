@@ -1,5 +1,6 @@
 package org.example.ebankify.util;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,12 +54,13 @@ public class JwtAuthenticationFilter implements Filter {
             httpResponse.setContentType("application/json");
             httpResponse.getWriter().write("{\"error\": \"Authentication required\", \"message\": \"" + e.getMessage() + "\"}");
 
-        } catch (PermissionException e) {
+        } catch (PermissionException | ExpiredJwtException e) {
 
             httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
             httpResponse.setContentType("application/json");
             httpResponse.getWriter().write("{\"error\": \"Access Denied\", \"message\": \"" + e.getMessage() + "\"}");
         }
+
     }
 
     private String chechAuth(String authHeader) {

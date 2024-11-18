@@ -1,27 +1,29 @@
 package org.example.ebankify.service.transaction;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ebankify.entity.Account;
 import org.example.ebankify.entity.Transaction;
+import org.example.ebankify.entity.User;
 import org.example.ebankify.exception.BadRequest;
 import org.example.ebankify.exception.NotFoundException;
 import org.example.ebankify.repository.AccountRepository;
 import org.example.ebankify.repository.TransactionRepository;
+import org.example.ebankify.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
-
-    @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository) {
-        this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public Transaction getTransaction(Long id) {
@@ -47,6 +49,13 @@ public class TransactionServiceImpl implements TransactionService {
         accountRepository.save(receiver);
         return transactionRepository.save(transaction);
 
+    }
+
+    @Override
+    public List<Transaction> getByAuthUserTransactions(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found"));
+
+        return transactionRepository.findByUserId(user.getId());
     }
 
 }
