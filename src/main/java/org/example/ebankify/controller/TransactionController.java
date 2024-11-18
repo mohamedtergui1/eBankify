@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.ebankify.dto.transaction.request.TransactionCreateDto;
 import org.example.ebankify.dto.transaction.response.TransactionResponseDto;
+import org.example.ebankify.entity.Transaction;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.mappers.TransactionMapper;
 import org.example.ebankify.repository.TransactionRepository;
@@ -32,8 +33,7 @@ public class TransactionController {
 
     @PostMapping
     public TransactionResponseDto addTransaction(@RequestBody @Valid TransactionCreateDto transactionCreateDto, @RequestHeader("Authorization") String token){
-        String email = jwt.extractEmailString(token.substring(7));
-        User user = userService.getUserByEmail(email);
-        return transactionMapper.toResponseDto(transactionService.saveTransaction(transactionMapper.toEntity(transactionCreateDto)));
+
+        return transactionMapper.toResponseDto(transactionService.saveTransaction(transactionMapper.toEntity(transactionCreateDto))) ;
     }
 }

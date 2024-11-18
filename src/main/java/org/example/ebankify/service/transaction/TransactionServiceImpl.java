@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.ebankify.entity.Account;
 import org.example.ebankify.entity.Transaction;
 import org.example.ebankify.entity.User;
+import org.example.ebankify.enums.TransactionStatus;
 import org.example.ebankify.exception.BadRequest;
 import org.example.ebankify.exception.NotFoundException;
 import org.example.ebankify.repository.AccountRepository;
@@ -36,18 +37,19 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Transaction saveTransaction(Transaction transaction) {
 
-        Account sender = accountRepository.findByAccountNumber(transaction.getSender().getAccountNumber()).orElseThrow(() -> new NotFoundException("Account sender not found"));
-        Account receiver = accountRepository.findByAccountNumber(transaction.getReceiver().getAccountNumber()).orElseThrow(() -> new NotFoundException("Account receiver not found"));
-
-        if (sender.getBalance() < transaction.getAmount()) {
+        Account sender = accountRepository.findById(transaction.getSender().getId()).orElseThrow(() -> new NotFoundException("Account sender not found"));
+        Account receiver = accountRepository.findById(transaction.getReceiver().getId()).orElseThrow(() -> new NotFoundException("Account receiver not found"));
+        if ( sender.getBalance() < transaction.getAmount()) {
             throw new BadRequest("tha balance is not enough");
         }
-
+        transaction.setStatus(TransactionStatus.COMPLETED);
         sender.setBalance(sender.getBalance() - transaction.getAmount());
         receiver.setBalance(receiver.getBalance() + transaction.getAmount());
         accountRepository.save(sender);
         accountRepository.save(receiver);
-        return transactionRepository.save(transaction);
+        transaction =  transactionRepository.save(transaction);
+        transaction = transaction;
+        return transaction;
 
     }
 

@@ -20,8 +20,10 @@ public class TransactionCreateDto {
     private Double amount;
 
     @NotNull(message = "Receiver ID cannot be null.")
-    @Min(value = 1, message = "Receiver ID must be greater than 0.")
     private Long receiverId;
+
+    @NotNull(message = "Receiver ID cannot be null.")
+    private Long senderId;
 
     private Boolean sameBank;
 }
