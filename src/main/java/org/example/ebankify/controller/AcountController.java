@@ -1,6 +1,7 @@
 package org.example.ebankify.controller;
 
 
+import lombok.RequiredArgsConstructor;
 import org.example.ebankify.dto.account.request.AccountUpdateDto;
 import org.example.ebankify.dto.account.response.AccountDtoResponse;
 import org.example.ebankify.entity.Account;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users/account")
 public class AcountController {
@@ -22,13 +23,8 @@ public class AcountController {
     private final Jwt jwt;
     private final UserService userService;
 
-    @Autowired
-    public AcountController(AccountService accountService, Jwt jwt, AccountMapper accountMapper, UserService userService) {
-        this.accountService = accountService;
-        this.jwt = jwt;
-        this.accountMapper = accountMapper;
-        this.userService = userService;
-    }
+
+
 
     @GetMapping
     public Page<Account> authUserAccounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestHeader("Authorization") String token) {

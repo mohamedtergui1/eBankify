@@ -1,7 +1,9 @@
 package org.example.ebankify.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.ebankify.enums.TransactionStatus;
 import org.example.ebankify.enums.TransactionType;
@@ -10,6 +12,8 @@ import org.example.ebankify.enums.TransactionType;
 @Table(name = "transaction")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
     @Id
@@ -31,5 +35,8 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private Account receiver;
+
+    @Column(name = "same_bank")
+    boolean sameBank;
 
 }

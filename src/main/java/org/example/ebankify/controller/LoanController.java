@@ -1,21 +1,21 @@
 package org.example.ebankify.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.ebankify.entity.Loan;
 import org.example.ebankify.service.loan.LoanService;
+import org.example.ebankify.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/employee")
+@RequiredArgsConstructor
+@RequestMapping("/loan")
 public class LoanController {
 
     private final LoanService loanService;
 
-    @Autowired
-    public LoanController(LoanService loanService) {
-        this.loanService = loanService;
-    }
 
     @GetMapping("/{id}")
     public Loan getLoanId(@PathVariable Long id) {
@@ -24,13 +24,13 @@ public class LoanController {
 
     @PostMapping
     public Loan createLoan(@RequestBody Loan loan) {
-
         return loanService.saveLoan(loan);
     }
 
-    @PostMapping
+    @PutMapping
     public Loan updateLoan(@RequestBody Loan loan) {
         return loanService.updateLoan(loan);
     }
+
 
 }

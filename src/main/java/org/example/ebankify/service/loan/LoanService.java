@@ -8,8 +8,7 @@ public interface LoanService {
 
     Loan saveLoan(Loan loan);
 
-    void deleteLoan(int id);
-
     Loan updateLoan(Loan loan);
 
+    void processLoanPayments();
 }

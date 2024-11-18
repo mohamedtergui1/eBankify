@@ -1,13 +1,17 @@
 package org.example.ebankify.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.ebankify.enums.LoanStatus;
 @Entity
 @Table(name = "loans")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Loan {
     @Id
     private Long id;
@@ -29,5 +33,19 @@ public class Loan {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private boolean approved;
+
+    public Double calculateMonthlyPayment() {
+
+        double monthlyInterestRate = (interestRate / 100) / 12;
+
+
+        if (monthlyInterestRate == 0) {
+            return principal / termMonths;
+        }
+
+        double numerator = principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, termMonths);
+        double denominator = Math.pow(1 + monthlyInterestRate, termMonths) - 1;
+
+        return numerator / denominator;
+    }
 }

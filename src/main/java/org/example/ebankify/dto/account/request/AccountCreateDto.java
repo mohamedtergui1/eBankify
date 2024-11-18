@@ -1,6 +1,7 @@
 package org.example.ebankify.dto.account.request;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.example.ebankify.enums.AccountStatus;
 
@@ -11,6 +12,7 @@ public class AccountCreateDto {
     private Double balance;
 
     @NotNull
+    @Size(max = 24 )
     private String accountNumber;
 
     @NotNull

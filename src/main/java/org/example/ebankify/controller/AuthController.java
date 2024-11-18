@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
 
     private final AuthService authService;
     private final Jwt jwtUtil;
