@@ -14,6 +14,7 @@ import org.example.ebankify.enums.LoanStatus;
 @AllArgsConstructor
 public class Loan {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

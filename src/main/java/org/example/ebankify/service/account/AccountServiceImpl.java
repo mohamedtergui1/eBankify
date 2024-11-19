@@ -1,6 +1,7 @@
 package org.example.ebankify.service.account;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ebankify.dto.account.response.AccountDtoResponse;
 import org.example.ebankify.entity.Account;
 import org.example.ebankify.entity.User;
 import org.example.ebankify.exception.BadRequest;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -89,6 +91,11 @@ public class AccountServiceImpl implements AccountService {
         Pageable pageable = PageRequest.of(page, size);
         return accountRepository.findByUserId(authUser.getId(), pageable);
 
+    }
+
+    @Override
+    public List<Account> getAll() {
+        return accountRepository.findAll();
     }
 
 }

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findAllByStatus(LoanStatus status);
+    List<Loan> findAllByUserEmail(String user_email);
 }

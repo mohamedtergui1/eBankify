@@ -32,9 +32,11 @@ public class UpdateUserRequest  {
     private int age;
 
     @Min(value = 0)
+    @NotNull
     private Double monthlyIncome;
 
     @Min(value = 0)
+    @NotNull
     private int creditScore;
 
     @NotNull

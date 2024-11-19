@@ -6,7 +6,7 @@ import org.example.ebankify.enums.AccountStatus;
 
 @Getter
 public class AccountUpdateDto {
-
+    @NotNull
     private Long id;
 
     @NotNull
@@ -18,4 +18,6 @@ public class AccountUpdateDto {
     @NotNull
     private AccountStatus status;
 
+    @NotNull
+    private Long userId;
 }

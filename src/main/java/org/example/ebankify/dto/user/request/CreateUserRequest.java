@@ -11,6 +11,7 @@ public class CreateUserRequest {
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 30)
+
     private String password;
 
     @NotBlank(message = "name is required")
@@ -27,11 +28,16 @@ public class CreateUserRequest {
     private int age;
 
     @Min(value = 0)
+    @NotNull
     private Double monthlyIncome;
 
     @Min(value = 0)
+    @NotNull
+
     private int creditScore;
 
     @NotNull
+    @NotNull
+
     private UserRole role;
 }

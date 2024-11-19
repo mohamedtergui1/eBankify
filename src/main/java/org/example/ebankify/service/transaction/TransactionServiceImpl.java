@@ -47,9 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
         receiver.setBalance(receiver.getBalance() + transaction.getAmount());
         accountRepository.save(sender);
         accountRepository.save(receiver);
-        transaction =  transactionRepository.save(transaction);
-        transaction = transaction;
-        return transaction;
+        return transactionRepository.save(transaction);
 
     }
 

@@ -33,6 +33,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Loan saveLoan(Loan loan) {
+        loan.setStatus(LoanStatus.PENDING);
         userRepository.findById(loan.getUser().getId()).orElseThrow(()-> new NotFoundException("user not found"));
         return loanRepository.save(loan);
     }
@@ -41,7 +42,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Loan updateLoan(Loan loan) {
-        loanRepository.getById(loan.getId());
+        loanRepository.findById(loan.getId()).orElseThrow(()-> new NotFoundException("loan not found"));
         userRepository.findById(loan.getUser().getId()).orElseThrow(()-> new NotFoundException("user not found"));
         return loanRepository.save(loan);
     }
@@ -52,13 +53,23 @@ public class LoanServiceImpl implements LoanService {
     public void processLoanPayments() {
             List<Loan> loans = loanRepository.findAllByStatus(LoanStatus.APPROVED);
             for (Loan loan : loans) {
-                Optional<Account> Optaccount = accountRepository.findByUserId(loan.getUser().getId());
-                if(Optaccount.isPresent()) {
-                    Account account = Optaccount.get();
-                    account.setBalance(account.getBalance()- loan.calculateMonthlyPayment());
+                Optional<Account> isOptaccount = accountRepository.findByUserId(loan.getUser().getId());
+                if(isOptaccount.isPresent()) {
+                    Account account = isOptaccount.get();
+                    account.setBalance(account.getBalance() - loan.calculateMonthlyPayment());
                     accountRepository.save(account);
                 }
             }
+    }
+
+    @Override
+    public List<Loan> getAll() {
+        return  loanRepository.findAll();
+    }
+
+    @Override
+    public List<Loan> getLoanForAuthAll(String email) {
+        return loanRepository.findAllByUserEmail(email);
     }
 
 
