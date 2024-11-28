@@ -38,13 +38,13 @@ This is a comprehensive online banking management application developed using Sp
 - Java 17+
 - Maven
 - Docker (optional, for ElasticSearch)
-- PostgreSQL/MySQL
+- PostgreSQL
 
 ## Installation Steps
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[your-username]/banking-app.git
+   git clone https://github.com/eBankify
    cd banking-app
    ```
 
@@ -72,7 +72,7 @@ The application uses a custom authentication mechanism:
 ### Authentication Endpoints
 - `/auth/register`: User registration
 - `/auth/login`: User login
-- `/auth/validate`: Token validation
+
 
 ## Transaction Types
 
